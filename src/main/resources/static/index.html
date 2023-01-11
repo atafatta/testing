@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>uas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <div>Data Barang</div>
+        <hr>
+        <script>
+            const url = "http://localhost:8080/kalolauas";
+            function post() {
+                let editID = document.getElementById("id").value;
+                let namakafe = document.getElementById("namakafe").value;
+                let gambar = document.getElementById("gambar").value;
+                let dataText = {"id": editID, "namakafe": namakafe};
+                let dataFile = {"gambar": gambar};
+                let dataJson = JSON.stringify(dataText);
+                const blob = new Blob([dataFile]);
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: dataJson,blob,
+                    contentType: 'application/json',
+                    dataType: 'text',
+                    success: function (result) {
+                        document.getElementById("viewer").innerHTML = result;
+                    }
+                });
+            }
+
+            function put() {
+                let editID = document.getElementById("id").value;
+                let namakafe = document.getElementById("namakafe").value;
+                let gambar = document.getElementById("gambar").value;
+                let dataText = {"id": editID, "namakafe": namakafe, "gambar": gambar};
+                let dataFile = {"gambar": gambar};
+                let dataJson = JSON.stringify(dataText);
+                $.ajax({
+                    url: url,
+                    method: 'PUT',
+                    data: dataJson,
+                    contentType: 'application/json',
+                    dataType: 'text',
+                    success: function (result) {
+                        document.getElementById("viewer").innerHTML = result;
+
+                    }
+                });
+            }
+
+            function get() {
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    dataType: 'text',
+                    success: function (result) {
+                        document.getElementById("viewer").innerHTML = result;
+                    }
+                });
+            }
+
+            function delID() {
+                let editID = document.getElementById("id").value;
+                let namakafe = document.getElementById("namakafe").value;
+                let gambar = document.getElementById("gambar").value;
+                let dataText = {"id": editID};
+                let dataFile = {"gambar": gambar};
+                let dataJson = JSON.stringify(dataText);
+                $.ajax({
+                    url: url,
+                    method: 'DELETE',
+                    data: dataJson,
+                    contentType: 'application/json',
+                    dataType: 'text',
+                    success: function (result) {
+                        document.getElementById("viewer").innerHTML = result;
+                    }
+                });
+            }
+        </script>
+        <input type="text" id="id" name="id"> <br>
+        <input type="text" id="namakafe" name="namakafe"> <br>
+        <input type="file" id="gambar" name="gambar"> 
+        <hr>
+        <button onclick="get()">Get The Data from Web Server</button><br>
+        <button onclick="post()">Send The Data to Web Server</button><br>
+        <button onclick="put()">Edit The Data of Web Server</button><br>
+        <button onclick="delID()">Delete The Data of Web Server</button>
+        <hr>
+        <div id="viewer"></div>
+
+    </body>
+</html>
